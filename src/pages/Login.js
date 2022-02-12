@@ -61,9 +61,9 @@ class Login extends React.Component {
               type="email"
               id="email"
               name="valueEmail"
-              data-testid="email-input"
               value={ valueEmail }
               onChange={ (e) => this.handleInputsChange(e) }
+              data-testid="email-input"
             />
           </label>
 
