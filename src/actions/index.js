@@ -2,8 +2,8 @@
 function loginAction(payload) {
   return {
     type: 'LOG_IN',
-    payload
-  }
+    payload,
+  };
 }
 
 export default loginAction;

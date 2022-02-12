@@ -17,57 +17,53 @@ class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  validateEmail(email) 
-    {
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
-    }
+  validateEmail(email) {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
 
   handleInputsChange({ target: { name, value } }) {
-    
     this.setState({
       [name]: value,
     }, () => {
       const {
         valueEmail,
-        valuePass
+        valuePass,
       } = this.state;
       const SEIS = 6;
 
       if (valuePass.length < SEIS
         || !this.validateEmail(valueEmail)) {
-          this.setState({ disabled: true })
-        } else {
-          this.setState({ disabled: false })
-        }
+        this.setState({ disabled: true });
+      } else {
+        this.setState({ disabled: false });
+      }
     });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { history } = this.props
-
+    const { submitUserInfo, history } = this.props;
     const { valueEmail } = this.state;
-    const { submitUserInfo } = this.props;
     submitUserInfo(valueEmail);
-    history.push('/carteira')
+    history.push('/carteira');
   }
 
   render() {
     const { valueEmail, valuePass, disabled } = this.state;
 
-    return(
+    return (
       <div>
         <form>
           <label htmlFor="email">
             email:
             <input
-              type="text"
+              type="email"
               id="email"
               name="valueEmail"
+              data-testid="email-input"
               value={ valueEmail }
               onChange={ (e) => this.handleInputsChange(e) }
-              data-testid="email-input"
             />
           </label>
 
@@ -100,10 +96,11 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  submitUserInfo: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   submitUserInfo: (email) => dispatch(loginAction(email)),
-})
+});
 
 export default connect(null, mapDispatchToProps)(Login);
