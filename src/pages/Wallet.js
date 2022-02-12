@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 
 class Wallet extends React.Component {
   constructor() {
-    super ()
-
+    super();
     this.state = {
       initialValue: 0,
-    }
+    };
   }
 
   render() {
