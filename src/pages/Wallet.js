@@ -39,12 +39,12 @@ class Wallet extends React.Component {
               placeholder="descrição da despesa"
             />
 
-            <select
+            {/* <select
               name="currency"
               data-testid="currency-input"
               aria-label="moeda"
             >
-            </select>
+            </select> */}
 
             <select
               name="method"
