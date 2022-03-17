@@ -1,18 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import fetchApi from '../services/fetchApi';
 
 class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
       initialValue: 0,
+      value: 0,
+      moedas: [],
     };
+  }
+
+  componentDidMount() {
+    this.getApi();
+    console.log(this.getApi());
+    console.log(fetchApi());
+  }
+
+  getApi = async () => {
+    const apiValue = await fetchApi();
+    this.setState({
+      moedas: Object.keys(apiValue).filter((element) => element !== 'USDT'),
+    });
+    return apiValue;
+  }
+
+  handleChange = ({ target }) => {
+    const { name } = target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    this.setState({
+      [name]: value,
+    });
   }
 
   render() {
     const { email } = this.props;
-    const { initialValue } = this.state;
+    const { initialValue, value, moedas } = this.state;
 
     return (
       <div>
@@ -28,7 +54,8 @@ class Wallet extends React.Component {
               type="text"
               name="value"
               data-testid="value-input"
-              // value={ value }
+              onChange={ this.handleChange }
+              value={ value }
               placeholder="valor da despesa"
             />
 
@@ -39,16 +66,23 @@ class Wallet extends React.Component {
               placeholder="descrição da despesa"
             />
 
-            {/* <select
+            <select
               name="currency"
               data-testid="currency-input"
+              onChange={ this.handleChange }
               aria-label="moeda"
             >
-            </select> */}
+              {moedas.map((moeda) => (
+                <option value={ moeda } key={ moeda } data-testid={ moeda }>
+                  {moeda}
+                </option>
+              ))}
+            </select>
 
             <select
               name="method"
               data-testid="method-input"
+              onChange={ this.handleChange }
             >
               <option value="Dinheiro" defaultValue>Dinheiro</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
@@ -58,6 +92,7 @@ class Wallet extends React.Component {
             <select
               name="tag"
               data-testid="tag-input"
+              onChange={ this.handleChange }
             >
               <option value="Alimentação" defaultValue>Alimentação</option>
               <option value="Lazer">Lazer</option>
