@@ -4,24 +4,12 @@ import { connect } from 'react-redux';
 import fetchApi from '../services/fetchApi';
 import Table from '../components/Table';
 
-const INITIAL_STATE = {
-  value: 0,
-  description: '',
-  currency: '',
-  method: '',
-  tag: '',
-};
-
 class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
       initialValue: 0,
       value: 0,
-      currency: '',
-      method: '',
-      tag: '',
-      // description: '',
       moedas: [],
     };
   }
@@ -49,17 +37,9 @@ class Wallet extends React.Component {
     });
   }
 
-  handleClick = () => {
-    // e.preventDeafault();
-    const { saveExpenses } = this.props;
-    const { moedas, ...data } = this.state;
-    saveExpenses(data);
-    this.setState({ ...INITIAL_STATE });
-  }
-
   render() {
     const { email } = this.props;
-    const { initialValue, value, currency, method, tag, moedas } = this.state;
+    const { initialValue, value, moedas } = this.state;
 
     return (
       <div>
@@ -91,7 +71,7 @@ class Wallet extends React.Component {
               name="currency"
               data-testid="currency-input"
               onChange={ this.handleChange }
-              value={ currency }
+              aria-label="moeda"
             >
               {moedas.map((moeda) => (
                 <option value={ moeda } key={ moeda } data-testid={ moeda }>
@@ -104,7 +84,6 @@ class Wallet extends React.Component {
               name="method"
               data-testid="method-input"
               onChange={ this.handleChange }
-              value={ method }
             >
               <option value="Dinheiro" defaultValue>Dinheiro</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
@@ -115,7 +94,6 @@ class Wallet extends React.Component {
               name="tag"
               data-testid="tag-input"
               onChange={ this.handleChange }
-              value={ tag }
             >
               <option value="Alimentação" defaultValue>Alimentação</option>
               <option value="Lazer">Lazer</option>
@@ -125,8 +103,7 @@ class Wallet extends React.Component {
             </select>
 
             <button
-              type="button"
-              onClick={ this.handleClick }
+              type="submit"
             >
               Adicionar despesa
             </button>
