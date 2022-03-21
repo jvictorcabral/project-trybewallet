@@ -3,21 +3,24 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchApi from '../services/fetchApi';
 import Table from '../components/Table';
+import walletAction from '../actions/wallet';
 
 class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
-      initialValue: 0,
-      value: 0,
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      id: 0,
       moedas: [],
     };
   }
 
   componentDidMount() {
     this.getApi();
-    console.log(this.getApi());
-    console.log(fetchApi());
   }
 
   getApi = async () => {
@@ -37,15 +40,55 @@ class Wallet extends React.Component {
     });
   }
 
+  totalValue = () => {
+    const { expenses } = this.props;
+
+    if (expenses.length > 0) {
+      let finalResult = 0;
+
+      expenses.forEach((expense) => {
+        finalResult += Number(expense.value)
+           * Number(expense.exchangeRates[expense.currency].ask);
+      });
+      return finalResult.toFixed(2);
+    }
+    return 0;
+  }
+
+  handleCLick = async () => {
+    const apiValue = await this.getApi();
+    const { expensesAction } = this.props;
+    const { value, description, currency,
+      method, tag, id } = this.state;
+    const objectExpenses = {
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      id,
+      exchangeRates: apiValue,
+    };
+    expensesAction(objectExpenses);
+    this.setState({
+      value: '',
+      description: '',
+      id: id + 1,
+    });
+    this.totalValue();
+  }
+
   render() {
     const { email } = this.props;
-    const { initialValue, value, moedas } = this.state;
+    const { value, moedas } = this.state;
 
     return (
       <div>
         <header>
           <h3 data-testid="email-field">{`Email: ${email}`}</h3>
-          <h3 data-testid="total-field">{`Valor: ${initialValue}`}</h3>
+          <h3 data-testid="total-field">
+            {`Total expenses: R$${this.totalValue()}`}
+          </h3>
           <h3 data-testid="header-currency-field">Cambio: BRL</h3>
         </header>
 
@@ -57,14 +100,15 @@ class Wallet extends React.Component {
               data-testid="value-input"
               onChange={ this.handleChange }
               value={ value }
-              placeholder="valor da despesa"
+              placeholder="valor da expense"
             />
 
             <input
               type="text"
               name="description"
               data-testid="description-input"
-              placeholder="descrição da despesa"
+              onChange={ this.handleChange }
+              placeholder="descrição da expense"
             />
 
             <select
@@ -103,7 +147,8 @@ class Wallet extends React.Component {
             </select>
 
             <button
-              type="submit"
+              type="button"
+              onClick={ this.handleCLick }
             >
               Adicionar despesa
             </button>
@@ -121,6 +166,11 @@ Wallet.propTypes = {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Wallet);
+const mapDispatchToProps = (dispatch) => ({
+  expensesAction: (payload) => dispatch(walletAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
