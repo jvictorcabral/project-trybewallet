@@ -1,7 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Table extends React.Component {
+  finalValue = (value, ask) => {
+    const totalValue = value * ask;
+    return parseFloat(totalValue).toFixed(2);
+  }
+
   render() {
+    const { expenses } = this.props;
     return (
       <div>
         <table>
@@ -19,10 +27,40 @@ class Table extends React.Component {
               <th scope="col">Editar/Excluir</th>
             </tr>
           </thead>
+          <tbody>
+            {expenses.length > 0 && expenses.map(({id, description, tag, method, value, exchangeRates, currency}) => (
+              <tr key={ id }>
+                <td>{description}</td>
+                <td>{tag}</td>
+                <td>{method}</td>
+                <td>{Number(value).toFixed(2)}</td>
+                <td>{exchangeRates[currency].name}</td>
+                <td>
+                  {Number(exchangeRates[currency].ask).toFixed(2)}
+                </td>
+                <td>{exchangeRates[currency].codein}</td>
+                <td>
+                  {this.finalValue(value,
+                    exchangeRates[currency].ask)}
+                </td>
+                <td>Real</td>
+
+              </tr>
+            )) }
+          </tbody>
         </table>
       </div>
     );
   }
 }
 
-export default Table;
+Table.propTypes = {
+  expenses: PropTypes.objectOf(PropTypes.string),
+  currency: PropTypes.string,
+}.isRequired;
+
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps)(Table);
