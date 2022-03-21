@@ -28,7 +28,9 @@ class Table extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {expenses.length > 0 && expenses.map(({id, description, tag, method, value, exchangeRates, currency}) => (
+            {expenses.length > 0 && expenses.map(({ id, description, tag, method,
+              value, exchangeRates, currency,
+            }) => (
               <tr key={ id }>
                 <td>{description}</td>
                 <td>{tag}</td>
