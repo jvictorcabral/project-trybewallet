@@ -1,8 +1,14 @@
-function walletAction(payload) {
+export function walletAction(payload) {
   return {
     type: 'ADD_EXPENSE',
     payload,
   };
 }
 
-export default walletAction;
+export function delAction (payload) {
+  return {
+    type: 'DEL_EXPENSE',
+    payload,
+  }
+};
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { delAction } from '../actions/wallet';
 
 class Table extends React.Component {
   finalValue = (value, ask) => {
@@ -9,7 +10,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, dispatchDelete } = this.props;
     return (
       <div>
         <table>
@@ -46,7 +47,19 @@ class Table extends React.Component {
                     exchangeRates[currency].ask)}
                 </td>
                 <td>Real</td>
-
+                <td>
+                <button data-testid="edit-btn">
+                  editar despesa
+                </button>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => dispatchDelete(id) }
+                  value={ id }
+                >
+                  Delete
+                </button>
+                </td>
               </tr>
             )) }
           </tbody>
@@ -65,4 +78,8 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchDelete: (value) => dispatch(delAction(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

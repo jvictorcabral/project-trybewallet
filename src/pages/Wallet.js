@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchApi from '../services/fetchApi';
 import Table from '../components/Table';
-import walletAction from '../actions/wallet';
+import { walletAction } from '../actions/wallet';
 
 class Wallet extends React.Component {
   constructor() {
@@ -46,9 +46,9 @@ class Wallet extends React.Component {
     if (expenses.length > 0) {
       let finalResult = 0;
 
-      expenses.forEach((expense) => {
-        finalResult += Number(expense.value)
-           * Number(expense.exchangeRates[expense.currency].ask);
+      expenses.forEach(({ value, exchangeRates, currency}) => {
+        finalResult += Number(value)
+           * Number(exchangeRates[currency].ask);
       });
       return finalResult.toFixed(2);
     }
