@@ -48,17 +48,20 @@ class Table extends React.Component {
                 </td>
                 <td>Real</td>
                 <td>
-                <button data-testid="edit-btn">
-                  editar despesa
-                </button>
-                <button
-                  type="button"
-                  data-testid="delete-btn"
-                  onClick={ () => dispatchDelete(id) }
-                  value={ id }
-                >
-                  Delete
-                </button>
+                  <button
+                    type="button"
+                    data-testid="edit-btn"
+                  >
+                    editar despesa
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => dispatchDelete(id) }
+                    value={ id }
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             )) }

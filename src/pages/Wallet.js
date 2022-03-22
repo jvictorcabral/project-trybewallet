@@ -46,7 +46,7 @@ class Wallet extends React.Component {
     if (expenses.length > 0) {
       let finalResult = 0;
 
-      expenses.forEach(({ value, exchangeRates, currency}) => {
+      expenses.forEach(({ value, exchangeRates, currency }) => {
         finalResult += Number(value)
            * Number(exchangeRates[currency].ask);
       });

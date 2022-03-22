@@ -5,10 +5,9 @@ export function walletAction(payload) {
   };
 }
 
-export function delAction (payload) {
+export function delAction(payload) {
   return {
     type: 'DEL_EXPENSE',
     payload,
-  }
-};
-
+  };
+}
