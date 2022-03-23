@@ -11,3 +11,17 @@ export function delAction(payload) {
     payload,
   };
 }
+
+export function editAction(payload) {
+  return {
+    type: 'EDIT_EXPENSE',
+    payload,
+  };
+}
+
+export function saveEditAction(payload) {
+  return {
+    type: 'SAVE_EDIT_EXPENSE',
+    payload,
+  };
+}
