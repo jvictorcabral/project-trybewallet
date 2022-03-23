@@ -6,6 +6,7 @@ import Form from '../components/Form';
 import EditForm from '../components/EditForm';
 
 // Fiz o requisito 9 com ajuda do Muca MUITO OBRIGADO SALVOU MINHA PELE!!!!!
+// erro github
 class Wallet extends React.Component {
   constructor() {
     super();
