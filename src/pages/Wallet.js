@@ -67,63 +67,65 @@ class Wallet extends React.Component {
 
         { !editClicked ? <Form /> : <EditForm editClicked={ editClicked } /> }
 
-        <section>
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Descrição</th>
-                <th scope="col">Tag</th>
-                <th scope="col">Método de pagamento</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Moeda</th>
-                <th scope="col">Ask</th>
-                <th scope="col">Câmbio utilizado</th>
-                <th scope="col">Valor convertido</th>
-                <th scope="col">Moeda de conversão</th>
-                <th scope="col">Editar/Excluir</th>
+        <table>
+          <thead>
+            <tr>
+              <th
+                scope="col"
+              >
+                Descrição
+              </th>
+              <th scope="col">Tag</th>
+              <th scope="col">Método de pagamento</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Moeda</th>
+              <th scope="col">Ask</th>
+              <th scope="col">Câmbio utilizado</th>
+              <th scope="col">Valor convertido</th>
+              <th scope="col">Moeda de conversão</th>
+              <th scope="col">Editar/Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            {expenses.length > 0 && expenses.map(({ id, description, tag, method,
+              value, exchangeRates, currency,
+            }) => (
+              <tr key={ id }>
+                <td>{description}</td>
+                <td>{tag}</td>
+                <td>{method}</td>
+                <td>{Number(value).toFixed(2)}</td>
+                <td>{exchangeRates[currency].name}</td>
+                <td>
+                  {Number(exchangeRates[currency].ask).toFixed(2)}
+                </td>
+                <td>{exchangeRates[currency].codein}</td>
+                <td>
+                  {this.finalValue(value,
+                    exchangeRates[currency].ask)}
+                </td>
+                <td>Real</td>
+                <td>
+                  <button
+                    type="button"
+                    data-testid="edit-btn"
+                    onClick={ () => this.handleEdit(id) }
+                  >
+                    Editar
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => dispatchDelete(id) }
+                    value={ id }
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {expenses.length > 0 && expenses.map(({ id, description, tag, method,
-                value, exchangeRates, currency,
-              }) => (
-                <tr key={ id }>
-                  <td>{description}</td>
-                  <td>{tag}</td>
-                  <td>{method}</td>
-                  <td>{Number(value).toFixed(2)}</td>
-                  <td>{exchangeRates[currency].name}</td>
-                  <td>
-                    {Number(exchangeRates[currency].ask).toFixed(2)}
-                  </td>
-                  <td>{exchangeRates[currency].codein}</td>
-                  <td>
-                    {this.finalValue(value,
-                      exchangeRates[currency].ask)}
-                  </td>
-                  <td>Real</td>
-                  <td>
-                    <button
-                      type="button"
-                      data-testid="edit-btn"
-                      onClick={ () => this.handleEdit(id) }
-                    >
-                      Editar
-                    </button>
-                    <button
-                      type="button"
-                      data-testid="delete-btn"
-                      onClick={ () => dispatchDelete(id) }
-                      value={ id }
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              )) }
-            </tbody>
-          </table>
-        </section>
+            )) }
+          </tbody>
+        </table>
       </div>
     );
   }
